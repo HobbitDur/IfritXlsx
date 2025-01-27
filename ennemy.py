@@ -2,7 +2,7 @@ import copy
 import os
 from math import floor
 
-from gamedata import GameData
+from IfritXlsx.FF8GameData.gamedata import GameData
 
 
 class Ennemy():

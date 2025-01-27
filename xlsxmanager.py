@@ -7,8 +7,8 @@ from math import floor
 import xlsxwriter
 from openpyxl.reader.excel import load_workbook
 
-from ennemy import Ennemy
-from gamedata import GameData
+from .ennemy import Ennemy
+from .gamedata import GameData
 
 COL_MONSTER_INFO = 0
 COL_STAT = 3
@@ -66,12 +66,14 @@ MAX_SHEET_TITLE_SIZE = 31
 INVALID_CHAR_TITLE_EXCEL_LIST = ['[', ']', ':', '*', '?', '/', '\\']
 
 
-class DatToXlsx():
+class DatToXlsx:
+    def __init__(self):
+        self.__file_name_list = []
+        self.workbook = None
 
-    def __init__(self, ifrit_xlsx):
+    def create_file(self, ifrit_xlsx):
         self.workbook = xlsxwriter.Workbook(ifrit_xlsx)  # {'strings_to_numbers':True}
         self.__init_style()
-        self.__file_name_list = []
 
     def __init_style(self):
         self.column_title_style = self.workbook.add_format({'bold': True, 'border': 1, 'bg_color': '#b2b2b2', 'align': 'center'})
@@ -169,7 +171,7 @@ class DatToXlsx():
         self.__validate_renzokuken(worksheet, game_data)
 
     def __validate_stat(self, worksheet, game_data: GameData):
-        worksheet.data_validation(1, COL_STAT+1, 1 + 6, COL_STAT +1+ 4,
+        worksheet.data_validation(1, COL_STAT + 1, 1 + 6, COL_STAT + 1 + 4,
                                   {'validate': 'integer', 'criteria': 'between',
                                    'minimum': game_data.STAT_MIN_VAL, 'maximum': game_data.STAT_MAX_VAL,
                                    'input_title': 'Stat',
@@ -551,8 +553,8 @@ class DatToXlsx():
                     col_ia_index = col_ia_index_ref
                     if ia_data['id'] == 2:  # IF
                         if last_was_else0:
-                            col_ia_index_ref -=1
-                            col_ia_index -=1
+                            col_ia_index_ref -= 1
+                            col_ia_index -= 1
                             format_color = list_format_color[(col_ia_index_ref - COL_ABILITIES) % len(list_format_color)]
                         worksheet.write(row_index['ia_data'], col_ia_index, 'IF condition', self.column_title_style)
                         worksheet.write(row_index['ia_data'] + 1, col_ia_index, ia_data['if_text'], format_color)
@@ -584,7 +586,7 @@ class DatToXlsx():
                         last_was_else0 = False
                     elif ia_data['id'] == 35:  # ENDIF/ELSE
                         col_ia_index_ref -= 1
-                        if ia_data['text'] == 'ELSE' and last_was_end and ia_data['param'][0]==0 :
+                        if ia_data['text'] == 'ELSE' and last_was_end and ia_data['param'][0] == 0:
                             col_ia_index_ref += 1
                         col_ia_index = col_ia_index_ref
                         format_color = list_format_color[(col_ia_index_ref - COL_ABILITIES) % len(list_format_color)]
@@ -608,7 +610,7 @@ class DatToXlsx():
                             last_was_end = True
                         else:
                             last_was_end = False
-                        #if ia_data['text'] == 'ENDIF':
+                        # if ia_data['text'] == 'ENDIF':
                         #    col_ia_index_ref -= 1
                     else:
                         worksheet.write(row_index['ia_data'], col_ia_index, 'Command ID', self.column_title_style)
@@ -636,7 +638,6 @@ class DatToXlsx():
         worksheet.insert_chart(STAT_GRAPH_CELL_PLACEMENT, chart_stat[ennemy])
         worksheet.autofit()
 
-
     def create_ref_data(self, game_data):
         # Creating reference data on last tab
         worksheet = self.workbook.add_worksheet(REF_DATA_SHEET_TITLE)
@@ -660,8 +661,12 @@ class DatToXlsx():
         worksheet.autofit()
         self.workbook.close()
 
+
 class XlsxToDat():
-    def __init__(self, xlsx_file):
+    def __init__(self):
+        self.workbook = None
+
+    def load_file(self, xlsx_file):
         self.workbook = load_workbook(xlsx_file, read_only=True, data_only=True, keep_links=False)
 
     def write_to_dat_all_ennemy(self, ennemy_list, game_data: GameData, path: str, write_ia=True):
@@ -829,7 +834,7 @@ class XlsxToDat():
                         if str(id_command_read) in game_data.IA_CODE_NAME_LIST:
                             if str(id_command_read) == game_data.IA_CODE_NAME_LIST[-1]:
                                 end_hit = True
-                            command_dict = {'id': -1, 'param': [str(id_command_read)], 'end':end_hit}  # Separator
+                            command_dict = {'id': -1, 'param': [str(id_command_read)], 'end': end_hit}  # Separator
                         # Managing condition values
                         elif id_command_read == 'IF':
                             index_if += 1
@@ -873,7 +878,6 @@ class XlsxToDat():
                                 continue
                             else:
                                 command_dict = {'id': id_command_read, 'param': param_value}
-
 
                         current_ennemy.battle_script_data['ia_data'].append(command_dict)
                         break

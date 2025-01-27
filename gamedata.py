@@ -113,7 +113,7 @@ class GameData():
     CARD_OBTAIN_ORDER = ['DROP', 'MOD', 'RARE_MOD']
     MISC_ORDER = ['med_lvl', 'high_lvl', 'extra_xp', 'xp', 'mug_rate', 'drop_rate', 'ap']
     ABILITIES_HIGHNESS_ORDER = ['abilities_low', 'abilities_med', 'abilities_high']
-    RESOURCE_FOLDER = "Resources"
+    RESOURCE_FOLDER = "IfritXlsx/Resources"
     CHARACTER_LIST = ["Squall", "Zell", "Irvine", "Quistis", "Rinoa", "Selphie", "Seifer", "Edea", "Laguna", "Kiros", "Ward", "Angelo",
                       "Griever", "Boko"]
     COLOR_LIST = ["Darkgrey", "Grey", "Yellow", "Red", "Green", "Blue", "Purple", "White",
@@ -146,7 +146,7 @@ class GameData():
         self.__init_hex_to_str_table()
 
     def __init_hex_to_str_table(self):
-        with open("Resources/sysfnt.txt", "r", encoding="utf-8") as localize_file:
+        with open(os.path.join(self.RESOURCE_FOLDER, "sysfnt.txt"), "r", encoding="utf-8") as localize_file:
             self.translate_hex_to_str_table = localize_file.read()
             self.translate_hex_to_str_table = self.translate_hex_to_str_table.replace(',",",',
                                                                                       ',";;;",')  # Handling the unique case of a "," character (which is also a separator)
