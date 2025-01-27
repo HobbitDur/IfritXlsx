@@ -669,11 +669,11 @@ class XlsxToDat():
     def load_file(self, xlsx_file):
         self.workbook = load_workbook(xlsx_file, read_only=True, data_only=True, keep_links=False)
 
-    def write_to_dat_all_ennemy(self, ennemy_list, game_data: GameData, path: str, write_ia=True):
+    def write_to_dat_all_ennemy(self, ennemy_list, game_data: GameData, path: str, write_ai=True):
         for key, ennemy in ennemy_list.items():
-            ennemy.write_data_to_file(game_data, path, write_ia)
+            ennemy.write_data_to_file(game_data, path, write_ai)
 
-    def import_from_xlsx(self, sheet, game_data: GameData, output_path, limit_file_index=-1, analyse_ia=True):
+    def import_from_xlsx(self, sheet, game_data: GameData, output_path, limit_file_index=-1, analyse_ai=True):
         """
         As the module to write is different from the reading one, the one writing start at 0 for column and row, when this one, the reading, start at 1
         """
@@ -686,7 +686,7 @@ class XlsxToDat():
         print("Reading sheet: {}".format(sheet.title))
         current_ennemy = Ennemy(game_data)
         current_ennemy.load_file_data(os.path.join(output_path, ennemy_origin_file), game_data)  # Loading the file to have all offset correct
-        current_ennemy.analyse_loaded_data(game_data, analyse_ia)
+        current_ennemy.analyse_loaded_data(game_data, analyse_ai)
         current_ennemy.info_stat_data['monster_name'] = sheet.cell(ROW_MONSTER_NAME + 1, COL_MONSTER_INFO + 1 + 1).value
         current_ennemy.origin_file_name = ennemy_origin_file
 
@@ -795,7 +795,7 @@ class XlsxToDat():
 
         current_ennemy.info_stat_data['renzokuken'] = renzokuken_list
 
-        if analyse_ia:
+        if analyse_ai:
             print("Reading IA from XLSX (can take up to 5 sec per monster be patient)")
             print("Starting reading IA at {}".format(time.perf_counter()))
             # IA reading

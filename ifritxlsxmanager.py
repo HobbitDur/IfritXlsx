@@ -1,6 +1,7 @@
 import argparse
 import glob
 import os
+import pathlib
 import re
 import shutil
 import sys
@@ -19,14 +20,10 @@ class IfritXlsxManager:
         self._xlsx_to_dat_manager = XlsxToDat()
 
     def create_file(self, xlsx_file):
-        print("create file xlsx manager")
         self._dat_xlsx_manager.create_file(xlsx_file)
-        print("End create file xlsx manager")
 
     def load_file(self, xlsx_file):
-        print("load file xlsx manager")
         self._xlsx_to_dat_manager.load_file(xlsx_file)
-        print("End load file xlsx manager")
 
     def dat_to_xlsx(self, file_list, analyse_ai=False):
         print("Getting game data")
@@ -44,27 +41,26 @@ class IfritXlsxManager:
             monster.load_file_data(monster_file, game_data)
             monster.analyse_loaded_data(game_data, analyse_ai)
 
-            # print("Creating checksum file")
-            # self.create_checksum_file(monster, "checksum_origin_file.txt")
             print("Writing to xlsx file")
             self._dat_xlsx_manager.export_to_xlsx(monster, file_name, game_data, analyse_ai)
 
         self._dat_xlsx_manager.create_ref_data(game_data)
 
-    def xlsx_to_dat(self, output_path, local_limit, analyse_ai=False):
-        print("Getting game data")
+    def xlsx_to_dat(self, file_list, local_limit, analyse_ai=False):
         game_data = GameData()
         game_data.load_all()
-        for sheet in self._xlsx_to_dat_manager .workbook:
+        for sheet in self._xlsx_to_dat_manager.workbook:
             if sheet.title != xlsxmanager.REF_DATA_SHEET_TITLE:
                 monster_index = int(re.search(r'\d+', sheet.title).group())
                 if local_limit > 0 and local_limit != monster_index:  # Only doing the monster asked
                     continue
-                print("Importing data from xlsx")
-                ennemy = self._xlsx_to_dat_manager .import_from_xlsx(sheet, game_data, output_path, local_limit, analyse_ai)
+                else:
+                    current_dat_file = [pathlib.Path(text).resolve().parent for text in file_list if int(pathlib.Path(text).name.replace('c0m','').replace('.dat', '')) == monster_index]
+                    if current_dat_file:
+                        current_dat_file = current_dat_file[0]
+                    else:
+                        print(f"Unexpected monster index: {monster_index}")
+                        return
+                ennemy = self._xlsx_to_dat_manager.import_from_xlsx(sheet, game_data, current_dat_file, local_limit, analyse_ai)
                 if ennemy:
-                    print("Writing data to dat files")
-                    ennemy.write_data_to_file(game_data, output_path, analyse_ai)
-
-                # print("Creating checksum file")
-                # self.create_checksum_file(ennemy, "checksum_output_file.txt")
+                    ennemy.write_data_to_file(game_data, current_dat_file, analyse_ai)
