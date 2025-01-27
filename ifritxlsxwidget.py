@@ -15,8 +15,7 @@ class IfritXlsxWidget(QWidget):
     WORK_OPTION = ["Dat -> Xlsx", "Xlsx -> Dat"]
 
 
-    def __init__(self, icon_path='ifritXlsx/Resources'):
-        print("IfritXlsxWidget init ")
+    def __init__(self, icon_path=os.path.join(os.path.dirname(os.path.realpath(__file__)),"Resources")):
         QWidget.__init__(self)
         self.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.ifrit_manager = IfritXlsxManager()
@@ -164,8 +163,6 @@ class IfritXlsxWidget(QWidget):
         self.main_layout.addWidget(self.launch_info_label_widget)
         self.main_layout.addWidget(self.launch_button)
 
-        print("End there !")
-
         self.show()
         self.__process_change()
 
@@ -206,9 +203,6 @@ class IfritXlsxWidget(QWidget):
             self.csv_loaded_label.show()
 
     def __launch(self):
-        print("Launch")
-        print(self.dat_file_selected)
-        print(self.xlsx_file_selected)
         if not self.dat_file_selected or not self.xlsx_file_selected:
             text_error = "Please first select {} file"
             if not self.dat_file_selected :
