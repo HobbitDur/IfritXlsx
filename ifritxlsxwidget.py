@@ -9,6 +9,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QCheckBox, QComboBox, QLabel, QHBoxLayout, QLineEdit, QSpinBox, QFileDialog, \
     QMessageBox
 
+from IfritXlsx.FF8GameData.gamedata import GameData
 from IfritXlsx.ifritxlsxmanager import IfritXlsxManager
 
 
@@ -121,11 +122,8 @@ class IfritXlsxWidget(QWidget):
         self.autoopen_layout.addStretch(1)
 
         self.analyse_ai_info_label_widget = QLabel(
-            "<u>Step 6:</u> You can analyse the AI (and even write back to it) in the xlsx file.<br/>"
-            "It can takes a long time, so I propose the ability to not use it.<br/>"
-            "Also, writing AI with excel works but it's tedious, and not as fail-proof as ifritAI<br/>"
-            "I advice you to check it if you are doing Dat -> Xlsx so you have all info<br/>"
-            "But to uncheck it if you are doing Xlsx -> dat to not write back the AI<br/>")
+            "<u>Step 6:</u> You can analyse and write the AI when reading dat file<br/>"
+            "Writing back was possible, but deleted as IfritAI super seed this way.<br/>")
         self.analyse_ai = QCheckBox("Analyse IA")
         self.analyse_ai.setChecked(False)
 
@@ -163,17 +161,24 @@ class IfritXlsxWidget(QWidget):
         self.show()
         self.__process_change()
 
-        #self.dat_file_selected = ["C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/c0m028.dat"]
-        #self.xlsx_file_selected = "I:/Mod_FF8/Outils modding/Fichier de travail/GitProject/IfritEnhanced/IfritXlsx/OriginalFiles/test.xlsx"
+        self.dat_file_selected = ["C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/c0m028.dat"]
+        self.xlsx_file_selected = "C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/test.xlsx"
+        self.analyse_ai.setChecked(False)
+        self.open_xlsx.setChecked(False)
+        self.process_selector.setCurrentIndex(0)
         # self.limit_option.setValue(28)
 
     def __process_change(self):
         if self.process_selector.currentIndex() == 0:  # Dat to xlsx
             self.csv_upload_button.hide()
             self.csv_save_button.show()
+            self.analyse_ai_info_label_widget.show()
+            self.analyse_ai.show()
         elif self.process_selector.currentIndex() == 1:  # Xlsx to dat
             self.csv_upload_button.show()
             self.csv_save_button.hide()
+            self.analyse_ai_info_label_widget.hide()
+            self.analyse_ai.hide()
 
     def __load_dat_file(self, file_to_load: str = ""):
         # file_to_load = os.path.join("OriginalFiles", "c0m014.dat")  # For developing faster
@@ -231,8 +236,10 @@ class IfritXlsxWidget(QWidget):
             if self.process_selector.currentIndex() == 0:  # Dat to xlsx
                 self.ifrit_manager.create_file(self.xlsx_file_selected)
                 self.ifrit_manager.dat_to_xlsx(dat_file_current_list, self.analyse_ai.isChecked())
+
             elif self.process_selector.currentIndex() == 1:  # Xlsx to dat
                 self.ifrit_manager.load_file(self.xlsx_file_selected)
-                self.ifrit_manager.xlsx_to_dat(dat_file_current_list, self.limit_option.value(), self.analyse_ai.isChecked())
+                self.ifrit_manager.xlsx_to_dat(dat_file_current_list, self.limit_option.value())
             if self.open_xlsx.isChecked():
                 os.startfile(self.xlsx_file_selected)
+        print("Launch over !")
