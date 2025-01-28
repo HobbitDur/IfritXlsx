@@ -161,11 +161,11 @@ class IfritXlsxWidget(QWidget):
         self.show()
         self.__process_change()
 
-        self.dat_file_selected = ["C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/c0m028.dat"]
-        self.xlsx_file_selected = "C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/test.xlsx"
-        self.analyse_ai.setChecked(False)
-        self.open_xlsx.setChecked(False)
-        self.process_selector.setCurrentIndex(0)
+        # self.dat_file_selected = ["C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/c0m028.dat"]
+        # self.xlsx_file_selected = "C:/Users/Ludovic/Documents/Junction VIII/ilp-wip/Test/battle/test.xlsx"
+        # self.analyse_ai.setChecked(False)
+        # self.open_xlsx.setChecked(False)
+        # self.process_selector.setCurrentIndex(0)
         # self.limit_option.setValue(28)
 
     def __process_change(self):
