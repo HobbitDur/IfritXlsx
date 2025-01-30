@@ -4,7 +4,7 @@ import pathlib
 import shutil
 import subprocess
 
-DELING_PATH = os.path.join("../Resources", "ArchiveManagementCLI")
+DELING_PATH = os.path.join("Resources", "ArchiveManagementCLI")
 DELING_LIST_FILES = glob.glob(os.path.join(DELING_PATH, "*"))
 DELING_OUTPUT_ROOT_PATH = os.path.join("OutputFiles", "battle")
 
