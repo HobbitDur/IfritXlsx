@@ -4,7 +4,7 @@ import re
 
 from . import xlsxmanager
 from FF8GameData.gamedata import GameData
-from IfritXlsx.FF8GameData.dat.monsteranalyser import MonsterAnalyser
+from FF8GameData.dat.monsteranalyser import MonsterAnalyser
 from .xlsxmanager import XlsxToDat, DatToXlsx
 
 

@@ -7,9 +7,9 @@ from math import floor
 import xlsxwriter
 from openpyxl.reader.excel import load_workbook
 
-from IfritXlsx.FF8GameData.GenericSection.ff8text import FF8Text
-from IfritXlsx.FF8GameData.dat.monsteranalyser import MonsterAnalyser
-from IfritXlsx.FF8GameData.gamedata import GameData, AIData
+from FF8GameData.GenericSection.ff8text import FF8Text
+from FF8GameData.dat.monsteranalyser import MonsterAnalyser
+from FF8GameData.gamedata import GameData, AIData
 
 COL_MONSTER_INFO = 0
 COL_STAT = 3
