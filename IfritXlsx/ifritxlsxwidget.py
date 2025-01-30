@@ -13,10 +13,10 @@ from .ifritxlsxmanager import IfritXlsxManager
 class IfritXlsxWidget(QWidget):
     WORK_OPTION = ["Dat -> Xlsx", "Xlsx -> Dat"]
 
-    def __init__(self, icon_path="Resources"):
+    def __init__(self, icon_path="Resources", game_data_folder="FF8GameData"):
         QWidget.__init__(self)
         self.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.ifrit_manager = IfritXlsxManager()
+        self.ifrit_manager = IfritXlsxManager(game_data_folder)
         self.setWindowTitle("Ifrit-XLSX")
         self.__ifrit_icon = QIcon(os.path.join(icon_path, 'icon.ico'))
         self.setWindowIcon(self.__ifrit_icon)

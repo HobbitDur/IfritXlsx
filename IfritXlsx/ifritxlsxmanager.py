@@ -9,8 +9,8 @@ from .xlsxmanager import XlsxToDat, DatToXlsx
 
 
 class IfritXlsxManager:
-    def __init__(self):
-        self.game_data = GameData()
+    def __init__(self, game_data_folder="FF8GameData"):
+        self.game_data = GameData(game_data_folder)
         self.game_data.load_all()
         self._dat_xlsx_manager = DatToXlsx()
         self._xlsx_to_dat_manager = XlsxToDat()
