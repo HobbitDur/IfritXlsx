@@ -98,7 +98,8 @@ class IfritXlsxWidget(QWidget):
         self.limit_info_label_widget = QLabel(
             "<u>Step 4</u>: Select which monster to work on:<br/>"
             "The process can be quite long, so you can choose which monster ID you can to load"
-            "-1 means all monster (by default)")
+            "-1 means all monster (by default)<br/>"
+            "Useful if you want to write only certain .dat from a big xlsx file with all monsters")
         self.limit_option = QSpinBox()
         self.limit_option.setMaximum(200)
         self.limit_option.setMinimum(-1)
