@@ -18,5 +18,5 @@ if __name__ == '__main__':
         app = QApplication(sys.argv)
         if app.style().objectName() == "windows11":
             app.setStyle("Fusion")
-    main_window = IfritXlsxWidget()
+    main_window = IfritXlsxWidget(icon_path="Resources")
     sys.exit(app.exec())
