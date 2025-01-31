@@ -2,10 +2,10 @@ import os
 import pathlib
 import re
 
-from . import xlsxmanager
 from FF8GameData.gamedata import GameData
 from FF8GameData.dat.monsteranalyser import MonsterAnalyser
-from .xlsxmanager import XlsxToDat, DatToXlsx
+import xlsxmanager
+from xlsxmanager import XlsxToDat, DatToXlsx
 
 
 class IfritXlsxManager:

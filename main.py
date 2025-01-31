@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from IfritXlsx.ifritxlsxwidget import IfritXlsxWidget
+from ifritxlsxwidget import IfritXlsxWidget
 
 sys._excepthook = sys.excepthook
 def exception_hook(exctype, value, traceback):

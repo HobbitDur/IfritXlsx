@@ -7,7 +7,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QCheckBox, QComboBox, QLabel, QHBoxLayout, QSpinBox, QFileDialog, \
     QMessageBox
 
-from .ifritxlsxmanager import IfritXlsxManager
+from ifritxlsxmanager import IfritXlsxManager
 
 
 class IfritXlsxWidget(QWidget):
