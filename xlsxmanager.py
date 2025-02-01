@@ -224,11 +224,14 @@ class DatToXlsx:
         elif ability_type['name'] == "Item":
             ability_name = [f"{x['id']}:{x['name']}" for x in game_data.item_data_json['items'] if x['id'] == id][0]
             col_ab_str = xlsxwriter.utility.xl_col_to_name(REF_DATA_COL_ITEM)
+        elif ability_type['name'] == "Seifer":
+            ability_name = [f"{x['id']}:{x['name']}" for x in game_data.enemy_abilities_data_json['abilities'] if x['id'] == id][0]
+            col_ab_str = xlsxwriter.utility.xl_col_to_name(REF_DATA_COL_ITEM)
         else:
             if id < len(game_data.enemy_abilities_data_json):
                 ability_name = [f"{x['id']}:{x['name']}" for x in game_data.enemy_abilities_data_json['abilities'] if x['id'] == id][0]
             else:
-                ability_name = {'name': "Temp Garbage", 'ref': str(id) + ":Temp Garbage"}
+                ability_name = str(id) + ":Unknown name"
             col_ab_str = xlsxwriter.utility.xl_col_to_name(REF_DATA_COL_ABILITIES)
 
         col_str = xlsxwriter.utility.xl_col_to_name(REF_DATA_COL_ABILITIES_TYPE)
@@ -564,19 +567,15 @@ class DatToXlsx:
             last_was_end = False
             last_was_else0 = False
             row_index['ai_data'] = ROW_IA
-            print(f"battlescript AI data: {monster_analyser.battle_script_data['ai_data']}")
             for code_index, code_section in enumerate(monster_analyser.battle_script_data['ai_data']):
-                print(f"codesection: {code_section}")
                 worksheet.merge_range(xlsxwriter.utility.xl_col_to_name(COL_ABILITIES) + str(row_index['ai_data']) +
                                       ":" + xlsxwriter.utility.xl_col_to_name(COL_ABILITIES + 20) + str(row_index['ai_data']),
                                       list_title_text[code_index], cell_format=self.column_title_style)
                 col_ai_index_ref = COL_ABILITIES
                 for command in code_section:
-                    print(f"AI data: {command}")
                     format_color = list_format_color[(col_ai_index_ref - COL_ABILITIES) % len(list_format_color)]
                     col_ai_index = col_ai_index_ref
                     if command.get_id() == 2:  # IF
-                        print(f"text paral!: {command.get_text_param()}")
                         if last_was_else0:
                             col_ai_index_ref -= 1
                             col_ai_index -= 1
@@ -792,7 +791,6 @@ class XlsxToDat():
             else:
                 break
         current_ennemy.battle_script_data['battle_text'] = combat_text_list
-        print(f"Battle text from xlsx: {current_ennemy.battle_script_data['battle_text']}")
 
         # Card reading
         card_list = []
