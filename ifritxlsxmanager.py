@@ -42,8 +42,6 @@ class IfritXlsxManager:
         self._dat_xlsx_manager.close_file()
 
     def xlsx_to_dat(self, file_list, local_limit):
-        game_data = GameData()
-        game_data.load_all()
         for sheet in self._xlsx_to_dat_manager.workbook:
             if sheet.title != xlsxmanager.REF_DATA_SHEET_TITLE:
                 monster_index = int(re.search(r'\d+', sheet.title).group())
@@ -55,8 +53,8 @@ class IfritXlsxManager:
                         current_dat_file = current_dat_file[0]
                     else:
                         print(f"Unexpected monster index: {monster_index}")
-                        return
-                ennemy = self._xlsx_to_dat_manager.import_from_xlsx(sheet, game_data, pathlib.Path(current_dat_file).resolve().parent, local_limit)
+                        continue
+                ennemy = self._xlsx_to_dat_manager.import_from_xlsx(sheet, self.game_data, pathlib.Path(current_dat_file).resolve().parent, local_limit)
                 if ennemy:
-                    ennemy.write_data_to_file(game_data, current_dat_file)
+                    ennemy.write_data_to_file(self.game_data, current_dat_file)
         self._xlsx_to_dat_manager.close_file()
