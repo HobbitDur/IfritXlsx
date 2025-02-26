@@ -58,3 +58,30 @@ class IfritXlsxManager:
                 if ennemy:
                     ennemy.write_data_to_file(self.game_data, current_dat_file)
         self._xlsx_to_dat_manager.close_file()
+
+    def get_monster_data_from_xlsx(self, load_all_data=False, load_only_first=False) -> dict:
+        monster_list = {}
+        for sheet in self._xlsx_to_dat_manager.workbook:
+            print(sheet.title)
+            if sheet.title != xlsxmanager.REF_DATA_SHEET_TITLE:
+                current_monster = MonsterAnalyser(self.game_data)
+                original_file_name = self._xlsx_to_dat_manager.read_original_file(sheet)
+                print(original_file_name)
+                self._xlsx_to_dat_manager.read_monster_name(self.game_data, sheet, current_monster)
+                self._xlsx_to_dat_manager.read_stat(self.game_data, sheet, current_monster)
+                self._xlsx_to_dat_manager.read_def(self.game_data, sheet, current_monster)
+                if load_all_data:
+                    self._xlsx_to_dat_manager.read_item(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_misc(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_ability(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_text(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_card(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_devour(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_byte_flag(self.game_data, sheet, current_monster)
+                    self._xlsx_to_dat_manager.read_renzokuken(self.game_data, sheet, current_monster)
+                monster_list[original_file_name] =  current_monster
+                if load_only_first:
+                    break
+        self._xlsx_to_dat_manager.close_file()
+        return monster_list
+
