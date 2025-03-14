@@ -21,7 +21,7 @@ class IfritXlsxManager:
     def load_file(self, xlsx_file):
         self._xlsx_to_dat_manager.load_file(xlsx_file)
 
-    def dat_to_xlsx(self, file_list, analyse_ai=False):
+    def dat_to_xlsx(self, file_list, analyse_ai=False, callback_func=None):
         print("Getting game data")
 
         print("Reading ennemy files")
@@ -34,6 +34,7 @@ class IfritXlsxManager:
             monster = MonsterAnalyser(self.game_data)
             monster.load_file_data(monster_file, self.game_data)
             monster.analyse_loaded_data(self.game_data)
+            callback_func(monster)
 
             print("Writing to xlsx file")
             self._dat_xlsx_manager.export_to_xlsx(monster, file_name, self.game_data, analyse_ai)
