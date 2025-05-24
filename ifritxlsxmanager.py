@@ -34,7 +34,8 @@ class IfritXlsxManager:
             monster = MonsterAnalyser(self.game_data)
             monster.load_file_data(monster_file, self.game_data)
             monster.analyse_loaded_data(self.game_data)
-            callback_func(monster)
+            if callback_func:
+                callback_func(monster)
 
             print("Writing to xlsx file")
             self._dat_xlsx_manager.export_to_xlsx(monster, file_name, self.game_data, analyse_ai)
